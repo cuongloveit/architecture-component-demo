@@ -1,6 +1,6 @@
 package com.example.architecturecomponentdemo.di
 
-import com.example.architecturecomponentdemo.MyAppplication
+import com.example.architecturecomponentdemo.MyApplication
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -16,13 +16,13 @@ import javax.inject.Singleton
         AppModule::class,
         UiModule::class)
 )
-interface AppComponent : AndroidInjector<MyAppplication> {
+interface AppComponent : AndroidInjector<MyApplication> {
     @Component.Builder
     interface Builder {
-        @BindsInstance fun application(application: MyAppplication): Builder
+        @BindsInstance fun application(application: MyApplication): Builder
         fun build(): AppComponent
     }
 
-    override fun inject(instance: MyAppplication) {
+    override fun inject(instance: MyApplication) {
     }
 }

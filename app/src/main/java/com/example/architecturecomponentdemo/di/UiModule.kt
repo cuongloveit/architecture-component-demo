@@ -1,7 +1,7 @@
 package com.example.architecturecomponentdemo.di
 
 import android.arch.lifecycle.ViewModelProvider
-import com.example.architecturecomponentdemo.MainActivity
+import com.example.architecturecomponentdemo.ui.activity.MainActivity
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

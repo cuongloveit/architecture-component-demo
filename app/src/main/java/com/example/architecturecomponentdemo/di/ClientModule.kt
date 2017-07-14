@@ -1,26 +1,21 @@
 package com.example.architecturecomponentdemo.di
 
+import com.example.architecturecomponentdemo.api.MyAPI
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import com.squareup.moshi.KotlinJsonAdapterFactory
-import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 /**
  * Created by cuong on 7/14/17.
  */
 @Module
-class DataModule {
+class ClientModule {
 
-    @Singleton @Provides
-    fun provideMoshi() = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
 
     @Singleton @Provides
     fun providesOkHttp(): OkHttpClient = OkHttpClient.Builder()
@@ -29,16 +24,16 @@ class DataModule {
             .build()
 
     @Singleton @Provides
-    fun provideRetrofit(oktHttpClient: OkHttpClient, moshi: Moshi): Retrofit
+    fun provideRetrofit(oktHttpClient: OkHttpClient): Retrofit
             = Retrofit.Builder()
             .client(oktHttpClient)
-            .baseUrl("https://api.github.com")
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .baseUrl("https://api.github.com/")
+            .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
-//    @Singleton @Provides
-//    fun provideGitHubService(retrofit: Retrofit): GitHubService
-//            = retrofit.create(GitHubService::class.java)
+    @Singleton @Provides
+    fun provideAPIService(retrofit: Retrofit): MyAPI
+            = retrofit.create(MyAPI::class.java)
 
 }

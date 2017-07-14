@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="heading_text_size">16sp</dimen>
+    <dimen name="body_text_size">14sp</dimen>
+
+    <dimen name="small_padding">5dp</dimen>
+    <dimen name="normal_padding">8dp</dimen>
+    <dimen name="big_padding">16dp</dimen>
+</resources>
