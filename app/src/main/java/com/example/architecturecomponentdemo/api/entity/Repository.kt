@@ -1,6 +1,14 @@
 package com.example.architecturecomponentdemo.api.entity
 
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
+
 /**
  * Created by cuong on 7/14/17.
  */
-data class Repository(var id: Long, var name: String, var description: String)
+@Entity
+data class Repository(
+        @PrimaryKey
+        var id: Long,
+        var name: String,
+        var description: String)

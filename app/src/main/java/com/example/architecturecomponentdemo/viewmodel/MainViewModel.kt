@@ -17,6 +17,8 @@ class MainViewModel @Inject constructor(private val myAPI: MyAPI) : ViewModel() 
     val repositories = MutableLiveData<List<Repository>>()
     val error = MutableLiveData<String>()
     val isLoading = MutableLiveData<Boolean>()
+    val keyword = MutableLiveData<String>()
+
 
     fun searchRespository(keyword: String) {
         isLoading.value = true

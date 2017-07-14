@@ -15,6 +15,7 @@ import com.example.architecturecomponentdemo.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import javax.inject.Inject
 
+
 /**
  * Created by cuong on 7/14/17.
  */
@@ -34,10 +35,24 @@ class MainFragment : BaseFragment(), LifecycleRegistryOwner, Injectable {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.searchRespository("java")
         setupRecyclerView()
         updateListRepository()
         showProgressbar()
+        listenSearch()
+
+
+    }
+
+    private fun listenSearch() {
+        btnSearch.setOnClickListener({
+            viewModel.keyword.value = edtSearch.text.toString()
+        })
+
+        viewModel.keyword.observe(this, Observer {
+            it?.let {
+                viewModel.searchRespository(it)
+            }
+        })
 
 
     }
