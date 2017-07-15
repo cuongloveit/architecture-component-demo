@@ -1,0 +1,27 @@
+## Gradle opts + JDK 8
+machine:
+  environment:
+    _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+  java:
+    version: oraclejdk8
+## Customize dependencies
+dependencies:
+  pre:
+    - echo "y" | android update sdk --no-ui --all --filter tools,build-tools-25.0.2,android-25,extra-google-m2repository,extra-google-google_play_services,extra-android-m2repository
+    - sudo pip install -U crcmod
+  post:
+    - ./gradlew assembleVanillaDebug assembleVanillaDebugAndroidTest -PdisablePreDex
+    - echo $FIREBASE_SERVICE_ACCOUNT | base64 --decode > ${HOME}/client-secret.json
+    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
+    - sudo /opt/google-cloud-sdk/bin/gcloud config set project $FIREBASE_PROJECT
+    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components install beta
+    - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
+test:
+  override:
+    - ./gradlew testVanillaDebugUnitTest -PdisablePreDex
+    - echo "y" | sudo /opt/google-cloud-sdk/bin/gcloud beta test android run --app app/build/outputs/apk/app-vanilla-debug.apk --test app/build/outputs/apk/app-vanilla-debug-androidTest.apk --device-ids Nexus5 --os-version-ids 22 --locales en --orientations portrait
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    - sudo /opt/google-cloud-sdk/bin/gsutil -m cp -r -U `sudo /opt/google-cloud-sdk/bin/gsutil ls gs://$TEST_LAB_BUCKET | tail -1` $CIRCLE_ARTIFACTS/ | true
