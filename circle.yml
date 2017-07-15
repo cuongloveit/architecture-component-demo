@@ -8,7 +8,7 @@ machine:
 ## Customize dependencies
 dependencies:
   pre:
-    - echo "y" | android update sdk --no-ui --all --filter tools,build-tools-25.0.2,android-25,extra-google-m2repository,extra-google-google_play_services,extra-android-m2repository
+    - echo "y" | android update sdk --no-ui --all --filter tools,build-tools-26.0.0,android-26,extra-google-m2repository,extra-google-google_play_services,extra-android-m2repository
     - sudo pip install -U crcmod
   post:
     - ./gradlew assembleVanillaDebug assembleVanillaDebugAndroidTest -PdisablePreDex
@@ -20,7 +20,7 @@ dependencies:
 test:
   override:
     - ./gradlew testVanillaDebugUnitTest -PdisablePreDex
-    - echo "y" | sudo /opt/google-cloud-sdk/bin/gcloud beta test android run --app app/build/outputs/apk/app-vanilla-debug.apk --test app/build/outputs/apk/app-vanilla-debug-androidTest.apk --device-ids Nexus5 --os-version-ids 22 --locales en --orientations portrait
+    - echo "y" | sudo /opt/google-cloud-sdk/bin/gcloud beta test android run --app app/build/outputs/apk/app-tiki-test-debug.apk --test app/build/outputs/apk/app-tiki-test-debug-androidTest.apk --device-ids Nexus5 --os-version-ids 22 --locales en --orientations portrait
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
