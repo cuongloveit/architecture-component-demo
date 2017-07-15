@@ -16,7 +16,7 @@ dependencies:
 test:
   override:
     - ./gradlew assembleDebug 
-    - echo "y" | sudo /opt/google-cloud-sdk/bin/gcloud beta test android run --app app/build/outputs/apk/app-tiki-test-debug.apk --test app/build/outputs/apk/app-tiki-test-debug-androidTest.apk --device-ids Nexus5 --os-version-ids 22 --locales en --orientations portrait
+
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
