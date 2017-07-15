@@ -4,6 +4,10 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
+apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 26
@@ -17,6 +21,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug{
+            testCoverageEnabled !project.hasProperty('android.injected.invoked.from.ide')
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -30,6 +37,18 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+    }
+
+    lintOptions {
+        abortOnError false
+        quiet true
+        lintConfig file('./code_quality_tools/lint.xml')
+    }
+
+    jacocoAndroidUnitTestReport {
+        excludes += ['**/AutoValue_*.*',
+                     '**/*JavascriptBridge.class']
+        html.enabled true
     }
 }
 
@@ -80,13 +99,13 @@ dependencies {
     })
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
-   //testing
+    //testing
     testImplementation 'junit:junit:4.12'
-    testImplementation"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit:1.0.6'
     testImplementation "com.nhaarman:mockito-kotlin:1.1.0"
     testImplementation 'org.amshove.kluent:kluent:1.14'
-    testImplementation "org.robolectric:robolectric:3.1.4"
+    testImplementation "org.robolectric:robolectric:3.3.2"
     testImplementation "org.assertj:assertj-core:3.8.0"
 
 }
@@ -97,4 +116,50 @@ afterEvaluate {
             sourceSet.kotlin.setSrcDirs([])
         }
     }
+}
+
+
+
+task checkstyle(type: Checkstyle) {
+    description 'Check code standard'
+    group 'verification'
+
+    configFile file('./code_quality_tools/checkstyle.xml')
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
+    ignoreFailures = false
+}
+
+task findbugs(type: FindBugs) {
+    description 'Run findbugs'
+    group 'verification'
+    classes = files("$project.buildDir/intermediates/classes")
+    source 'src'
+    classpath = files()
+    effort 'max'
+    reportLevel = "high"
+    excludeFilter file('./code_quality_tools/findbugs.xml')
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+    ignoreFailures = false
+}
+
+task pmd(type: Pmd) {
+    description 'Run PMD'
+    group 'verification'
+    ruleSetFiles = files("./code_quality_tools/pmd.xml")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+
+    ignoreFailures = false
 }

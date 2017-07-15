@@ -1,17 +1,14 @@
 package com.example.architecturecomponentdemo.api
 
 import com.example.architecturecomponentdemo.api.entity.SearchResponse
-import com.example.architecturecomponentdemo.base.AppTestRunner
 import com.example.architecturecomponentdemo.base.BaseUnitTest
 import io.reactivex.subscribers.TestSubscriber
 import org.assertj.core.api.Assertions
 import org.junit.Test
-import org.junit.runner.RunWith
 
 /**
  * Created by cuong on 7/15/17.
  */
-@RunWith(AppTestRunner::class)
 class GithubAPI : BaseUnitTest() {
 
 
