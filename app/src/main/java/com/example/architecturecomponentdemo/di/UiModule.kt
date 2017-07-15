@@ -10,12 +10,12 @@ import dagger.android.ContributesAndroidInjector
  * Created by cuong on 7/14/17.
  */
 @Module
-internal abstract class UiModule {
+abstract class UiModule {
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
     @ContributesAndroidInjector(modules = arrayOf(MainModule::class))
-    internal abstract fun contributeMainActivity(): MainActivity
+     abstract fun contributeMainActivity(): MainActivity
 
 }

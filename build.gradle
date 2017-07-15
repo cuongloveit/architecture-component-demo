@@ -21,6 +21,9 @@ ext.support_version = "26.0.0-beta1"
 ext.dagger_version = "2.11"
 ext.retrofit_version = "2.2.0"
 ext.okhttp_version = "3.7.0"
+ext.espresso_version = "2.2.2"
+ext.rxjava_version = "2.1.0"
+ext.rxandroid_version = "2.0.1"
 
 allprojects {
     repositories {

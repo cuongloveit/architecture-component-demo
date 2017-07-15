@@ -1,6 +1,5 @@
 package com.example.architecturecomponentdemo.ui.activity
 
-import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.example.architecturecomponentdemo.R
@@ -11,7 +10,6 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var androidInjector: DispatchingAndroidInjector<Fragment>
     private val lifecycleRegistry by lazy { android.arch.lifecycle.LifecycleRegistry(this) }
 

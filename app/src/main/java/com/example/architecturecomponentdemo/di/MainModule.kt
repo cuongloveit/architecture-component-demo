@@ -12,7 +12,7 @@ import dagger.multibindings.IntoMap
  * Created by cuong on 7/14/17.
  */
 @Module
-internal abstract class MainModule {
+ abstract class MainModule {
 
     @Binds
     @IntoMap
